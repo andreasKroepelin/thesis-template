@@ -1,0 +1,182 @@
+% use KOMA class because we aren't dinosaurs
+\documentclass[paper=a4, abstract=on, twoside=true]{scrreprt}
+
+
+% ===========================
+% === general typesetting ===
+% ===========================
+
+% for proper font-support
+\usepackage{fontspec}
+% language handling (replaces babel)
+\usepackage{polyglossia}
+% proper quoting (\enquote{bla \enquote{blubb} bla} becomes "bla 'blubb' bla")
+\usepackage{csquotes} 
+% set margins (respects twosided page layout)
+\usepackage[top=3cm, bottom=3cm, left=4cm, right=2cm]{geometry}
+% page headers and footers
+\usepackage[automark,headsepline]{scrlayer-scrpage}
+
+
+% =========================
+% === maths typesetting ===
+% =========================
+
+% extended maths support
+\usepackage{amsmath}
+\usepackage{amsthm}
+% so you can type ∑ᵢ μᵢ ⊗ νᵢ instead of \sum_i \mu_i \otimes \nu_i
+\usepackage[bold-style=ISO]{unicode-math}
+
+
+% ========================
+% === code typesetting ===
+% ========================
+
+% syntax highlighting
+\usepackage[outputdir=out, breaklines]{minted}
+% pseudo code
+\usepackage{pseudo}
+
+
+% ================
+% === graphics ===
+% ================
+
+% custom drawings
+\usepackage{tikz}
+% plot functions and data
+\usepackage{pgfplots}
+% include images
+\usepackage{graphicx}
+
+
+% ===================
+% === fine tuning ===
+% ===================
+
+% make figure captions look nicer
+\usepackage[font=small, format=plain, margin=2em]{caption}
+% for subfigures
+\usepackage[subrefformat=parens]{subcaption}
+% add draftmode (use if typesetting becomes slow)
+\usepackage{ifdraft}
+% apply optimisations to letter placement
+\usepackage[final]{microtype}
+
+
+% ====================
+% === bibliography ===
+% ====================
+
+% use biblatex instead of bibtex with biber as backend
+\usepackage[backend=biber, maxbibnames=10, block=space]{biblatex}
+% define location ot bibliography file
+\addbibresource{bibliography.bib}
+
+
+% =====================
+% === font settings ===
+% =====================
+
+% define "Vollkorn" font (not so readible for text but looks great for headers)
+% download it from https://fonts.google.com/specimen/Vollkorn
+\newfontfamily{\vollkorn}{Vollkorn}[
+    BoldFont = {Vollkorn-SemiBold},
+    BoldItalicFont = {Vollkorn-SemiBoldItalic}
+]
+% use Vollkorn for headings and titlepage
+\setkomafont{disposition}{\bfseries\vollkorn}
+\setkomafont{author}{\vollkorn}
+\setkomafont{date}{\vollkorn}
+\setkomafont{publishers}{\vollkorn}
+\setkomafont{captionlabel}{\bfseries\vollkorn}
+
+% set main text font
+% recommendations:
+% - Minion Pro (https://fontsgeek.com/minion-pro-font)
+% - Source Serif Pro (https://fonts.google.com/specimen/Source+Serif+Pro)
+% old-style numbers look more professional and improve readability
+\setmainfont[ Numbers = OldStyle ]{Minion Pro}
+
+% make maths look better
+\setmathfont{TeX Gyre Pagella Math}
+\DeclareMathAlphabet{\mathcal}{OMS}{cmsy}{m}{n}
+
+% use monospace font with excellent Unicode coverage
+% download from https://github.com/cormullion/juliamono/releases
+\setmonofont[Scale = MatchLowercase]{JuliaMono}
+% configure syntax highlighting
+\usemintedstyle{tango}
+\setminted{frame=single, framesep=2mm, breaklines=true}
+
+
+% =========================
+% === language settings ===
+% =========================
+
+\setdefaultlanguage{english}
+\setotherlanguages{german}
+
+
+% ===============================
+% === set headers and footers ===
+% ===============================
+
+\clearpairofpagestyles
+\ofoot[\pagemark]{\pagemark}
+\lehead{\headmark}
+\rohead{\headmark}
+\pagestyle{scrheadings}
+\KOMAoptions{draft=false}
+
+
+% ================================
+% === adapt placement defaults ===
+% ================================
+
+% prevent single line on new page
+\widowpenalty=10000
+\clubpenalty=10000
+% fit tables and figures on "fuller" pages
+\renewcommand{\floatpagefraction}{.8}%
+
+
+% =========================
+% === declare titlepage ===
+% =========================
+
+\subject{Text or image above title}
+\title{Title}
+\subtitle{Subtitle, e.g. purpose of thesis}
+\author{\textsc{University Name} \\ Faculty Name \\[.5em] Author Name}
+\publishers{e.g. supervisors}
+\date{Date}
+
+
+% =======================
+% === actual document ===
+% =======================
+
+% only include the chapter that you currently work on for faster typesetting
+\includeonly{chapter2}
+
+\begin{document}
+
+\maketitle
+
+\include{abstract}
+
+\tableofcontents
+
+% put content in files chapter1.tex, chapter2.tex, ...
+\include{chapter1}
+\include{chapter2}
+\include{chapter3}
+
+\printbibliography[heading=bibintoc]
+
+% declaration of personal contribution
+\include{declaration}
+
+\end{document}
